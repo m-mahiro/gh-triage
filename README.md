@@ -1,6 +1,6 @@
 # gh-triage
 
-`gh-triage` is a tool that helps you manage and triage GitHub issues, pull requests, and discussions through [unread notifications](https://github.com/notifications?query=is%3Aunread).
+`gh-triage` is a tool that helps you manage and triage GitHub issues, pull requests, and discussions through notifications. It fetches all notifications from your Inbox (including already-read ones, equivalent to `all=true` in the GitHub API), so conditions like `done: "!unread"` can match read notifications as well.
 
 Key features of `gh-triage` are:
 
