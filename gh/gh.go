@@ -101,6 +101,7 @@ func (c *Client) Triage(ctx context.Context) error {
 	page := 1
 	for {
 		notifications, _, err := c.client.Activity.ListNotifications(ctx, &github.NotificationListOptions{
+			All: true,
 			ListOptions: github.ListOptions{
 				Page:    page,
 				PerPage: 100,
@@ -155,7 +156,7 @@ func (c *Client) action(ctx context.Context, n *github.Notification) error {
 	var isMerged bool
 
 	// Initialize default values
-	m["unread"] = true
+	m["unread"] = n.GetUnread()
 	m["is_issue"] = false
 	m["is_pull_request"] = false
 	m["is_discussion"] = false
