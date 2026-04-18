@@ -1,9 +1,8 @@
 package version
 
 import (
-	"regexp"
-	"strconv"
 	"strings"
+	"golang.org/x/mod/semver"
 )
 
 const (
@@ -11,82 +10,28 @@ const (
 	ReleaseRepo  = "gh-triage"
 )
 
-var versionPattern = regexp.MustCompile(`^v?(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z.-]+))?(?:\+[0-9A-Za-z.-]+)?$`)
-
-type parsedVersion struct {
-	major int
-	minor int
-	patch int
-	pre   string
-}
-
 func ShouldNotifyUpdate(current, latest string) bool {
-	cv, ok := parseVersion(current)
+	cv, ok := normalizeSemver(current)
 	if !ok {
 		return false
 	}
-	lv, ok := parseVersion(latest)
+	lv, ok := normalizeSemver(latest)
 	if !ok {
 		return false
 	}
-	return compareVersion(lv, cv) > 0
+	return semver.Compare(lv, cv) > 0
 }
 
-func parseVersion(v string) (parsedVersion, bool) {
-	matches := versionPattern.FindStringSubmatch(strings.TrimSpace(v))
-	if matches == nil {
-		return parsedVersion{}, false
+func normalizeSemver(v string) (string, bool) {
+	v = strings.TrimSpace(v)
+	if v == "" {
+		return "", false
 	}
-	major, err := strconv.Atoi(matches[1])
-	if err != nil {
-		return parsedVersion{}, false
+	if !strings.HasPrefix(v, "v") {
+		v = "v" + v
 	}
-	minor, err := strconv.Atoi(matches[2])
-	if err != nil {
-		return parsedVersion{}, false
+	if !semver.IsValid(v) {
+		return "", false
 	}
-	patch, err := strconv.Atoi(matches[3])
-	if err != nil {
-		return parsedVersion{}, false
-	}
-	return parsedVersion{
-		major: major,
-		minor: minor,
-		patch: patch,
-		pre:   matches[4],
-	}, true
-}
-
-func compareVersion(a, b parsedVersion) int {
-	if a.major != b.major {
-		if a.major > b.major {
-			return 1
-		}
-		return -1
-	}
-	if a.minor != b.minor {
-		if a.minor > b.minor {
-			return 1
-		}
-		return -1
-	}
-	if a.patch != b.patch {
-		if a.patch > b.patch {
-			return 1
-		}
-		return -1
-	}
-	if a.pre == b.pre {
-		return 0
-	}
-	if a.pre == "" {
-		return 1
-	}
-	if b.pre == "" {
-		return -1
-	}
-	if a.pre > b.pre {
-		return 1
-	}
-	return -1
+	return v, true
 }

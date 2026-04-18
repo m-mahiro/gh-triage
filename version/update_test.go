@@ -36,6 +36,12 @@ func TestShouldNotifyUpdate(t *testing.T) {
 			want:    false,
 		},
 		{
+			name:    "prerelease numeric identifiers are compared numerically",
+			current: "1.0.0-rc.2",
+			latest:  "v1.0.0-rc.10",
+			want:    true,
+		},
+		{
 			name:    "invalid latest tag",
 			current: "0.11.0",
 			latest:  "latest",
