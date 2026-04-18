@@ -27,3 +27,12 @@ git clone https://github.com/m-mahiro/gh-triage.git
 cd gh-triage
 gh extension install .
 ```
+
+## Version update notification
+
+When you run `gh triage`, it checks the latest release in `m-mahiro/gh-triage`.
+If a newer version is available, it prints an upgrade notice:
+
+```bash
+gh extension upgrade triage
+```

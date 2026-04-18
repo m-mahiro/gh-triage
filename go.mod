@@ -15,6 +15,7 @@ require (
 	github.com/savioxavier/termlink v1.4.3
 	github.com/shurcooL/githubv4 v0.0.0-20240727222349-48295856cce7
 	github.com/spf13/cobra v1.9.1
+	golang.org/x/mod v0.27.0
 	golang.org/x/sync v0.16.0
 )
 

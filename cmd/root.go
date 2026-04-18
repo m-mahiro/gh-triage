@@ -61,6 +61,7 @@ var rootCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
+		c.NotifyIfUpdateAvailable(cmd.Context())
 		if watch {
 			interval, err := duration.Parse(intervalFlag)
 			if err != nil {
