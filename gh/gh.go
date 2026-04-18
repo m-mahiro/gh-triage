@@ -19,6 +19,7 @@ import (
 	"github.com/fatih/color"
 	"github.com/google/go-github/v71/github"
 	"github.com/k1LoW/gh-triage/profile"
+	"github.com/k1LoW/gh-triage/version"
 	"github.com/k1LoW/go-github-client/v71/factory"
 	"github.com/pkg/browser"
 	"github.com/samber/lo"
@@ -90,6 +91,16 @@ func New(cfg *profile.Profile, w io.Writer, verbose bool) (*Client, error) {
 		w:        w,
 		verbose:  verbose,
 	}, nil
+}
+
+func (c *Client) NotifyIfUpdateAvailable(ctx context.Context) {
+	latest, _, err := c.client.Repositories.GetLatestRelease(ctx, version.ReleaseOwner, version.ReleaseRepo)
+	if err != nil {
+		return
+	}
+	if version.ShouldNotifyUpdate(version.Version, latest.GetTagName()) {
+		_, _ = fmt.Fprintf(c.w, "A newer gh-triage version is available (%s -> %s). Run `gh extension upgrade triage` to update.\n", version.Version, latest.GetTagName())
+	}
 }
 
 func (c *Client) Triage(ctx context.Context) error {
