@@ -27,3 +27,52 @@ git clone https://github.com/m-mahiro/gh-triage.git
 cd gh-triage
 gh extension install .
 ```
+
+## Build locally with Go
+
+You can build the extension entrypoint yourself. Build the binary in the repository root with the name `gh-triage` (or `gh-triage.exe` on Windows).
+
+### macOS / Linux
+
+```bash
+git clone https://github.com/m-mahiro/gh-triage.git
+cd gh-triage
+go build -o gh-triage .
+gh extension remove triage 2>/dev/null || true
+gh extension install .
+gh triage --help
+```
+
+### Windows (PowerShell)
+
+```powershell
+git clone https://github.com/m-mahiro/gh-triage.git
+cd gh-triage
+go build -o gh-triage.exe .
+gh extension remove triage
+gh extension install .
+gh triage --help
+```
+
+> [!NOTE]
+> On Windows, the executable must be `gh-triage.exe`.
+
+## FAQ: `...gh-triage: Is a directory`
+
+If `gh triage` fails with an error like:
+
+```text
+--: line 1: .../gh-triage/gh-triage: Is a directory
+```
+
+it usually means a directory named `gh-triage` exists where the executable should be.  
+The extension entrypoint must be a file named `gh-triage` (or `gh-triage.exe` on Windows), not a directory.
+
+- Remove or rename the conflicting `gh-triage` directory.
+- Rebuild the binary in the repository root.
+- Reinstall with `gh extension install .`.
+
+## If you do not have Go installed
+
+Prebuilt binaries for Windows/macOS/Linux are attached to the [Releases](https://github.com/m-mahiro/gh-triage/releases) page as Assets.  
+Download the binary for your platform and use it instead of building with Go locally.
