@@ -10,6 +10,70 @@
 `gh-triage` is a tool that helps you manage and triage GitHub issues, pull requests, and discussions through notifications. It fetches all notifications from your Inbox (including already-read ones, equivalent to `all=true` in the GitHub API), so conditions like `done: "!unread"` can match read notifications as well.
 
 
+## Maintainer workflows
+
+### Syncing with a new upstream release
+
+When [k1LoW/gh-triage](https://github.com/k1LoW/gh-triage) publishes a new release, follow these steps to bring the changes into this fork while preserving its custom modifications.
+
+```bash
+# Add the upstream remote (first time only)
+git remote add upstream https://github.com/k1LoW/gh-triage.git
+
+# Fetch the latest upstream commits
+git fetch upstream
+
+# Rebase this fork's main branch on top of upstream/main
+git checkout main
+git rebase upstream/main
+```
+
+If there are conflicts, resolve them manually — making sure to keep the fork-specific changes described in **Changes from upstream** above — then continue:
+
+```bash
+git add <conflicted-files>
+git rebase --continue
+```
+
+After a clean rebase, run the tests to confirm nothing is broken:
+
+```bash
+go test ./... -count=1
+```
+
+Then push to origin. `tagpr` will automatically create a release-candidate PR; merge it to publish a new tagged release.
+
+```bash
+git push origin main
+```
+
+---
+
+### Making custom changes to this fork
+
+1. Create a feature branch from `main`.
+
+```bash
+git checkout main
+git checkout -b feature/your-feature-name
+```
+
+2. Implement and test your changes.
+
+```bash
+go test ./... -count=1
+```
+
+3. Push the branch and open a Pull Request against `main`.
+
+```bash
+git push origin feature/your-feature-name
+```
+
+4. After the PR is merged into `main`, `tagpr` (`.github/workflows/tagpr.yml`) automatically opens a release-candidate PR that bumps `version/version.go`. Merge that PR to create a git tag and a GitHub Release with prebuilt binaries attached.
+
+---
+
 ## Install this fork (m-mahiro/gh-triage)
 
 ```bash
