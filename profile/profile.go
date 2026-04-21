@@ -73,19 +73,11 @@ func Load(name string) (*Profile, error) {
 			// Check if old config.yml exists
 			oldConfigPath := filepath.Join(filepath.Dir(p), "config.yml")
 			if _, err := os.Stat(oldConfigPath); err == nil {
-				// Copy config.yml to default.yml
+				// Rename config.yml to default.yml
 				if err := os.MkdirAll(filepath.Dir(p), 0700); err != nil {
 					return nil, err
 				}
-				data, err := os.ReadFile(oldConfigPath)
-				if err != nil {
-					return nil, err
-				}
-				if err := os.WriteFile(p, data, 0600); err != nil {
-					return nil, err
-				}
-				// Remove old config.yml
-				if err := os.Remove(oldConfigPath); err != nil {
+				if err := os.Rename(oldConfigPath, p); err != nil {
 					return nil, err
 				}
 				slog.Info("migrated config file", "from", oldConfigPath, "to", p)
