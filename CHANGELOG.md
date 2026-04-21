@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.11.0](https://github.com/m-mahiro/gh-triage/commits/v0.11.0) - 2026-04-21
+- Always fetch all notifications (all=true) by @Copilot in https://github.com/m-mahiro/gh-triage/pull/1
+- Add Go build docs and release-triggered cross-platform binary assets for gh-triage by @Copilot in https://github.com/m-mahiro/gh-triage/pull/4
+
 ## [v0.11.0](https://github.com/k1LoW/gh-triage/compare/v0.10.2...v0.11.0) - 2025-11-26
 - chore: setup tagpr labels by @k1LoW in https://github.com/k1LoW/gh-triage/pull/50
 - feat: support discussions by @k1LoW in https://github.com/k1LoW/gh-triage/pull/52
