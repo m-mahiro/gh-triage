@@ -1,5 +1,7 @@
 # Changelog
 
+## [v0.11.1](https://github.com/m-mahiro/gh-triage/compare/v0.11.0...v0.11.1) - 2026-04-26
+
 ## [v0.11.0](https://github.com/m-mahiro/gh-triage/commits/v0.11.0) - 2026-04-21
 - Always fetch all notifications (all=true) by @Copilot in https://github.com/m-mahiro/gh-triage/pull/1
 - Add Go build docs and release-triggered cross-platform binary assets for gh-triage by @Copilot in https://github.com/m-mahiro/gh-triage/pull/4
